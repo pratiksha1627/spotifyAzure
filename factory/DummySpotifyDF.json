@@ -1,0 +1,9 @@
+{
+	"name": "DummySpotifyDF",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "79f21d47-1a4c-4abc-84fb-04f0f6e44d3c",
+		"tenantId": "fd4b0923-9212-408d-a4a7-fb3258170777"
+	}
+}
