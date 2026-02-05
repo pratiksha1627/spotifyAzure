@@ -1,0 +1,9 @@
+{
+	"name": "lexdatacopy",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "757d77f2-0c37-489c-bbcd-d03b458ee6ea",
+		"tenantId": "fd4b0923-9212-408d-a4a7-fb3258170777"
+	}
+}

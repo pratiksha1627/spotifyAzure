@@ -1,0 +1,18 @@
+{
+	"name": "SourceDeletation",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DeleteSource",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "sourcefolder"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

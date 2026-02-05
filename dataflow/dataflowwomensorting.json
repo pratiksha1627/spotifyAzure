@@ -1,0 +1,87 @@
+{
+	"name": "dataflowwomensorting",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "womensorting",
+						"type": "DatasetReference"
+					},
+					"name": "womenSorting"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "womenSorted",
+						"type": "DatasetReference"
+					},
+					"name": "sinkWomen"
+				}
+			],
+			"transformations": [
+				{
+					"name": "sortwomen"
+				},
+				{
+					"name": "filterwomen"
+				},
+				{
+					"name": "filtercustomerId"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CustomerID as integer,",
+				"          NameStyle as boolean,",
+				"          Title as string,",
+				"          FirstName as string,",
+				"          MiddleName as string,",
+				"          LastName as string,",
+				"          Suffix as string,",
+				"          CompanyName as string,",
+				"          SalesPerson as string,",
+				"          EmailAddress as string,",
+				"          Phone as string,",
+				"          PasswordHash as string,",
+				"          PasswordSalt as string,",
+				"          rowguid as string,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> womenSorting",
+				"womenSorting sort(desc(FirstName, true)) ~> sortwomen",
+				"sortwomen filter(Title=='Ms.') ~> filterwomen",
+				"filterwomen filter(and( CustomerID>=500,CustomerID<=30000 )) ~> filtercustomerId",
+				"filtercustomerId sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          CustomerID as string,",
+				"          NameStyle as string,",
+				"          Title as string,",
+				"          FirstName as string,",
+				"          MiddleName as string,",
+				"          LastName as string,",
+				"          Suffix as string,",
+				"          CompanyName as string,",
+				"          SalesPerson as string,",
+				"          EmailAddress as string,",
+				"          Phone as string,",
+				"          PasswordHash as string,",
+				"          PasswordSalt as string,",
+				"          rowguid as string,",
+				"          ModifiedDate as string",
+				"     ),",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkWomen"
+			]
+		}
+	}
+}

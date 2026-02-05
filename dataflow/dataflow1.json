@@ -1,0 +1,67 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SourceDb",
+						"type": "DatasetReference"
+					},
+					"name": "DbSource"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SortedMale",
+						"type": "DatasetReference"
+					},
+					"name": "sinkSortedData"
+				}
+			],
+			"transformations": [
+				{
+					"name": "filterMale"
+				},
+				{
+					"name": "sortAsc"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CustomerID as integer,",
+				"          NameStyle as boolean,",
+				"          Title as string,",
+				"          FirstName as string,",
+				"          MiddleName as string,",
+				"          LastName as string,",
+				"          Suffix as string,",
+				"          CompanyName as string,",
+				"          SalesPerson as string,",
+				"          EmailAddress as string,",
+				"          Phone as string,",
+				"          PasswordHash as string,",
+				"          PasswordSalt as string,",
+				"          rowguid as string,",
+				"          ModifiedDate as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> DbSource",
+				"DbSource filter(Title=='Mr.') ~> filterMale",
+				"filterMale sort(asc(FirstName, true),",
+				"     caseInsensitive: true) ~> sortAsc",
+				"sortAsc sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sinkSortedData"
+			]
+		}
+	}
+}
